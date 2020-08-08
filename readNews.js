@@ -5,55 +5,11 @@ const { response } = require("express");
 const searchUrl =
   "https://www.dw.com/pt-002/not%C3%ADcias/mo%C3%A7ambique/s-30380";
 
-const searchCache = {};
-
-function searchHeadlines() {
+function getHeadlines() {
   return fetch(`${searchUrl}`)
     .then((response) => response.text())
     .then((body) => {
       const headlines = [];
-      const $ = cheerio.load(body);
-
-      let tempData = "";
-
-      $(".teaserContentWrap").each(function (i, element) {
-        const $element = $(element);
-
-        tempData = $element.find("h2").children().remove().end().text();
-        tempData = tempData.replace(/"|\n|#/g, "");
-
-        const $title = tempData;
-
-        tempData = $element.find("p").text();
-        tempData = tempData.replace(/"|\n|#/g, "");
-        const $lead = tempData;
-
-        const news = {
-          title: $title,
-          lead: $lead,
-        };
-        headlines.push(news);
-      });
-
-      //const $title = $element.find(".teaserContentWrap h2").text();
-      //const $title = $(".teaserContentWrap h2").text();
-      //    console.log($title);
-
-      // const $content = $(".teaserContentWrap p").text();
-      //      console.log($content);
-
-      // const $all = $(".teaserContentWrap").text();
-      //console.log($all);
-
-      return headlines;
-    });
-}
-
-function test() {
-  return fetch(`${searchUrl}`)
-    .then((response) => response.text())
-    .then((body) => {
-      const test = [];
       const $ = cheerio.load(body);
 
       let tempData = "";
@@ -82,7 +38,7 @@ function test() {
             url: $url.attr("href"),
           };
 
-          test.push(news);
+          headlines.push(news);
         }
 
         if ($element.find(".group").length) {
@@ -102,7 +58,7 @@ function test() {
             url: $url.attr("href"),
           };
 
-          test.push(news);
+          headlines.push(news);
 
           if ($element.find(".linkList.intern").length) {
             $url = $element.find(".linkList.intern").children("a");
@@ -123,7 +79,7 @@ function test() {
               url: $url.attr("href"),
             };
 
-            test.push(news);
+            headlines.push(news);
           }
 
           if ($element.find(".linkList.overlayIcon").length) {
@@ -138,16 +94,15 @@ function test() {
               url: $url.attr("href"),
             };
 
-            test.push(news);
+            headlines.push(news);
           }
         }
       });
 
-      return test;
+      return headlines;
     });
 }
 
 module.exports = {
-  searchHeadlines,
-  test,
+  getHeadlines,
 };

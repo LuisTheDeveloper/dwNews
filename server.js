@@ -10,14 +10,8 @@ app.get("/", (req, res) => {
 });
 
 app.get("/headlines", (req, res) => {
-  headlines.searchHeadlines().then((headlines) => {
+  headlines.getHeadlines().then((headlines) => {
     res.json(headlines);
-  });
-});
-
-app.get("/test", (req, res) => {
-  headlines.test().then((test) => {
-    res.json(test);
   });
 });
 
