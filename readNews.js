@@ -46,11 +46,11 @@ function getHeadlines() {
 
           tempData = $element.find(".news").children("a").children("h2").text();
           tempData = tempData.replace(/"|\n|#/g, "");
-          const $title = tempData;
+          const $title = tempData.trim();
 
           tempData = $element.find(".news").children("a").children("p").text();
           tempData = tempData.replace(/"|\n|#/g, "");
-          const $lead = tempData;
+          const $lead = tempData.trim();
 
           const news = {
             title: $title,
@@ -69,7 +69,7 @@ function getHeadlines() {
               .children("h2")
               .text();
             tempData = tempData.replace(/"|\n|#/g, "");
-            const $title = tempData;
+            const $title = tempData.trim();
 
             const $lead = "";
 
